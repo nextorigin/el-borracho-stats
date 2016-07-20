@@ -1,0 +1,41 @@
+{
+  "name": "el-borracho-stats",
+  "version": "1.0.0",
+  "description": "REST and SSE API and worker producing daily and all-time totals for Bull queues",
+  "main": "el-borracho-stats.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run test:modules && npm run test:coverage",
+    "test:modules": "mocha --recursive --compilers coffee:iced-coffee-script/register --require iced-coffee-coverage/register-istanbul test/",
+    "test:coverage": "istanbul report",
+    "build": "iced --bare --map -o ./ -c src/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nextorigin/el-borracho-stats.git"
+  },
+  "keywords": [
+    "bull",
+    "queue",
+    "job",
+    "borracho",
+    "stats",
+    "statistics",
+    "totals",
+    "sse",
+    "serversentevents",
+    "rest",
+    "api"
+  ],
+  "author": "doublerebel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nextorigin/el-borracho-stats/issues"
+  },
+  "homepage": "https://github.com/nextorigin/el-borracho-stats#readme",
+  "dependencies": {
+    "errify": "^1.0.0"
+  }
+}
