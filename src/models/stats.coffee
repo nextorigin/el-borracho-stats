@@ -111,8 +111,8 @@ class ElBorrachoStats
     statHash  = {}
     dates     = []
     keys      = for i in [0..daysPrevious-1]
-      date = new Date
-      date.setDate startDate.getDate() - i
+      date = new Date startDate
+      date.setDate date.getDate() - i
       datestr = @shortDate date
       dates.push datestr
       "#{prefix}:#{type}:#{datestr}"
