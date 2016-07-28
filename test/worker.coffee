@@ -33,31 +33,36 @@ describe "ElBorrachoStatsWorker", ->
     queue    = null
 
   describe "##constructor", ->
-    it "should load the store to @Store", ->
+    it "should load the store to @Store", (done) ->
       expect(instance.Store.name).to.equal "ElBorrachoStats"
-
-    it "should set the queue on @queue", ->
+      done()
+    it "should set the queue on @queue", (done) ->
       expect(instance.queue).to.equal queue
+      done()
 
-    it "should set the interval to default value", ->
+    it "should set the interval to default value", (done) ->
       instance = new ElBorrachoStatsWorker {queue}
       expect(instance.interval).to.equal 5000
+      done()
 
-    it "should set the interval to specified value", ->
+    it "should set the interval to specified value", (done) ->
       instance = new ElBorrachoStatsWorker {queue, interval: 6000}
 
       expect(instance.interval).to.equal 6000
+      done()
 
-    it "should pass namespace and expire to @store", ->
+    it "should pass namespace and expire to @store", (done) ->
       namespace = "universe"
       _expire   = 7
       instance  = new ElBorrachoStatsWorker {queue, namespace, expire: _expire}
 
       expect(instance.store.expire).to.equal _expire
       expect(instance.store.namespace).to.equal namespace
+      done()
 
-    it "should create a Store at @store", ->
+    it "should create a Store at @store", (done) ->
       expect(instance.store).to.be.an.instanceof instance.Store
+      done()
 
   describe "##listen", ->
     arbitraryWaitTime = 50
