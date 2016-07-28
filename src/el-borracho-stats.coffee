@@ -2,35 +2,10 @@ errify = require "errify"
 
 
 class ElBorrachoStatsController
-  constructor: ({namespace, @queue, @interval, expire}) ->
+  constructor: ({@redis, @namespace}) ->
     @Store      = require "./models/stats"
-    redis       = @queue.client
-    queuename   = @queue.name
-    @interval or= 5 * 1000
-    @store      = new @Store {redis, namespace, queuename, expire}
     @stores     = {}
-
-    @storeCache queuename
-
-  listen: =>
-    await @store.lock defer()
-
-    @queue.on "completed", @store.incrementCompleted
-    @queue.on "failed",    @store.incrementFailed
-
-    @poll()
-
-  poll: =>
-    @_poller = setInterval @store.update, @interval
-
-  stop: (callback) =>
-    if @_poller
-      clearInterval @_poller
-      delete @_poller
-    @queue.removeListener "completed", @store.incrementCompleted
-    @queue.removeListener "failed",    @store.incrementFailed
-
-    @store.unlock callback
+    @store      = new @Store {@redis, @namespace}
 
   # GET  "/stats/history"
   history: (req, res, next) =>
@@ -46,7 +21,6 @@ class ElBorrachoStatsController
 
     await @store.fetchForAll ideally defer total
     res.json total
-
 
   # GET  "/:queue/stats/history"
   queueHistory: (req, res, next) =>
@@ -70,8 +44,7 @@ class ElBorrachoStatsController
     res.json total
 
   storeCache: (queuename) ->
-    {redis, namespace} = @store
-    @stores[queuename] or= new @Store {redis, namespace, queuename}
+    @stores[queuename] or= new @Store {@redis, @namespace, queuename}
 
 
 module.exports = ElBorrachoStatsController
