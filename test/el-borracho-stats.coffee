@@ -2,7 +2,6 @@ ElBorrachoStats           = require "../src/models/stats"
 ElBorrachoStatsController = require "../src/el-borracho-stats"
 
 redis      = require "redis"
-Bull       = require "bull"
 errify     = require "errify"
 mocha      = require "mocha"
 {expect}   = require "chai"
@@ -15,148 +14,30 @@ delay = (timeout, fn) -> setTimeout fn, timeout
 
 describe "ElBorrachoStatsController", ->
   name      = "tacos"
-  expire    = 2
   interval  = 0.2 * 1000
   client    = null
-  queue     = null
   instance  = null
 
   beforeEach ->
     client    = redis.createClient()
-    createClient = -> client
-    queue     = new Bull name, {createClient}
-    instance  = new ElBorrachoStatsController {queue, interval}
+    instance  = new ElBorrachoStatsController {redis: client}
 
   afterEach ->
     client   = null
     instance = null
-    queue    = null
 
   describe "##constructor", ->
     it "should load the store to @Store", ->
       expect(instance.Store.name).to.equal "ElBorrachoStats"
 
-    it "should set the queue on @queue", ->
-      expect(instance.queue).to.equal queue
-
-    it "should set the interval to default value", ->
-      instance = new ElBorrachoStatsController {queue}
-      expect(instance.interval).to.equal 5000
-
-    it "should set the interval to specified value", ->
-      instance = new ElBorrachoStatsController {queue, interval: 6000}
-
-      expect(instance.interval).to.equal 6000
-
-    it "should pass namespace and expire to @store", ->
+    it "should pass namespace to @store", ->
       namespace = "universe"
-      expire    = 7
-      instance  = new ElBorrachoStatsController {queue, namespace, expire}
+      instance  = new ElBorrachoStatsController {redis: client, namespace}
 
-      expect(instance.store.expire).to.equal expire
       expect(instance.store.namespace).to.equal namespace
 
     it "should create a Store at @store", ->
       expect(instance.store).to.be.an.instanceof instance.Store
-
-    it "should create the storecache at @stores", ->
-      expect(instance.stores).to.be.an "object"
-
-  describe "##listen", ->
-    # afterEach (done) ->
-    arbitraryWaitTime = 50
-
-    it "should lock the store for queue", (done) ->
-      doubleoh = spy.on instance.store, "lock"
-
-      instance.listen()
-
-      await delay arbitraryWaitTime, defer()
-      expect(doubleoh.called).to.be.true
-      instance.stop done
-
-    it "should bind events to queue", (done) ->
-      blackhat = spy.on instance.store, "incrementCompleted"
-      whitehat = spy.on instance.store, "incrementFailed"
-
-      instance.listen()
-      await delay arbitraryWaitTime, defer()
-      queue.emit "completed"
-      queue.emit "failed"
-
-      expect(blackhat.called).to.be.true
-      expect(whitehat.called).to.be.true
-      instance.stop done
-
-    it "should start polling", (done) ->
-      doubleoh = spy.on instance, "poll"
-
-      instance.listen()
-      await delay arbitraryWaitTime, defer()
-
-      expect(doubleoh.called).to.be.true
-      instance.stop done
-
-  describe "##poll", ->
-    it "should set the poller for clearing", (done) ->
-      {interval} = instance
-
-      instance.poll()
-      await delay interval * 1.5, defer()
-
-      expect(instance._poller).to.exist
-      instance.stop done
-
-    it "should call update every interval", (done) ->
-      doubleoh = spy.on instance.store, "update"
-
-      instance.listen()
-      await delay interval * 2.5, defer()
-
-      expect(doubleoh.calledTwice).to.be.true
-      instance.stop done
-
-  describe "##stop", ->
-    arbitraryWaitTime = 50
-
-    it "should clear the poller", (done) ->
-      ideally = errify done
-
-      instance.poll()
-      await delay interval * 1.5, defer()
-
-      await instance.stop ideally defer()
-      expect(instance._poller).to.not.exist
-      done()
-
-    it "should unbind events", (done) ->
-      ideally = errify done
-
-      blackhat = spy.on instance.store, "incrementCompleted"
-      whitehat = spy.on instance.store, "incrementFailed"
-
-      instance.listen()
-      await delay arbitraryWaitTime, defer()
-
-      await instance.stop ideally defer()
-      queue.emit "completed"
-      queue.emit "failed"
-
-      expect(blackhat.called).to.be.false
-      expect(whitehat.called).to.be.false
-      done()
-
-    it "should unlock the store", (done) ->
-      ideally = errify done
-
-      doubleoh = spy.on instance.store, "unlock"
-
-      instance.listen()
-      await delay arbitraryWaitTime, defer()
-
-      await instance.stop ideally defer()
-      expect(doubleoh.called).to.be.true
-      done()
 
   describe "##history", ->
     req = {query: {}}
@@ -486,13 +367,13 @@ describe "ElBorrachoStatsController", ->
     it "should set a store when no store is stored", (done) ->
       names = Object.keys instance.stores
       n     = "burger"
-      expect(names).to.have.length 1
+      expect(names).to.have.length 0
       expect(instance.stores[n]).to.not.exist
 
       instance.storeCache n
 
       names = Object.keys instance.stores
-      expect(names).to.have.length 2
+      expect(names).to.have.length 1
       expect(instance.stores[n]).to.be.an.instanceof ElBorrachoStats
       done()
 
