@@ -45,7 +45,11 @@
     "redis": "^2.6.2",
     "sinon": "^1.17.4"
   },
+  "peerDependencies": {
+    "express": "^4.14.0"
+  },
   "dependencies": {
-    "errify": "^1.0.0"
+    "errify": "^1.0.0",
+    "sseries-of-tubes": "^1.3.0"
   }
 }
