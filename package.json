@@ -2,7 +2,7 @@
   "name": "el-borracho-stats",
   "version": "1.0.0",
   "description": "REST and SSE API and worker producing daily and all-time totals for Bull queues",
-  "main": "el-borracho-stats.js",
+  "main": "lib/el-borracho-stats.js",
   "directories": {
     "test": "test"
   },
@@ -10,7 +10,7 @@
     "test": "npm run test:modules && npm run test:coverage",
     "test:modules": "mocha --recursive --compilers coffee:iced-coffee-script/register --require iced-coffee-coverage/register-istanbul test/",
     "test:coverage": "istanbul report",
-    "build": "iced --bare --map -o ./ -c src/*"
+    "build": "iced --bare --map --runtime node -o ./lib -c src/"
   },
   "repository": {
     "type": "git",
@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "errify": "^1.0.0",
+    "iced-runtime": "^1.0.3",
     "sseries-of-tubes": "^1.3.0"
   }
 }
