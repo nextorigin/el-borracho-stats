@@ -95,7 +95,8 @@ class ElBorrachoStats
     await @fetchStatForQueue queue, "completed", startDate, daysPrevious, ideally defer completed
     await @fetchStatForQueue queue, "failed", startDate, daysPrevious, ideally defer failed
 
-    callback null, {completed, failed}
+    result = completed.concat failed
+    callback null, result
 
   fetchStat: (type, startDate = new Date, daysPrevious = 30, callback) =>
     @fetchStatForQueue @queuename, type, startDate, daysPrevious, callback
