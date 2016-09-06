@@ -4,6 +4,8 @@ node_js:
   - "5"
   - "4"
   - "0.12"
+services:
+  - redis-server
 after_success:
   - "npm run coverage-report"
   - "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
