@@ -40,12 +40,12 @@
     "bull": "^1.0.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.12",
-    "iced-coffee-coverage": "^1.0.2",
+    "iced-coffee-coverage": "^1.0.3",
     "iced-coffee-script": "^108.0.11",
-    "istanbul": "^0.4.4",
-    "mocha": "^2.5.3",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
     "redis": "^2.6.2",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.5"
   },
   "peerDependencies": {
     "express": "^4.14.0"
