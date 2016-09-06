@@ -51,6 +51,6 @@
   "dependencies": {
     "errify": "^1.0.0",
     "iced-runtime": "^1.0.3",
-    "sseries-of-tubes": "^1.3.0"
+    "sseries-of-tubes": "^2.0.0"
   }
 }
