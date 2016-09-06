@@ -85,11 +85,10 @@ describe "ElBorrachoStatsController", ->
 
     it "should fetch overall history", (done) ->
       await
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.history req, _res, done
 
-      expect(completed).to.exist
-      expect(failed).to.exist
+      expect(history).to.exist
       done()
 
     it "should fetch overall history for a specified start date", (done) ->
@@ -104,13 +103,14 @@ describe "ElBorrachoStatsController", ->
 
       await
         _req = query: start_date: datestr
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.history _req, _res, done
 
-      expect(completed).to.exist
-      expect(Number completed[0].value).to.equal 1
-      expect(failed).to.exist
-      expect(Number failed[0].value).to.equal 2
+      completedTwoDaysAgo = history[0]
+      failedTwoDaysAgo = do -> return stat for stat in history when stat.type is "failed"
+      expect(Number completedTwoDaysAgo.value).to.equal 1
+      expect(completedTwoDaysAgo.date).to.equal datestr
+      expect(failedTwoDaysAgo.date).to.equal datestr
       done()
 
     it "should fetch overall history for a specified number of days previous", (done) ->
@@ -132,15 +132,13 @@ describe "ElBorrachoStatsController", ->
 
       await
         _req = query: start_date: start, days_previous: days
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.history _req, _res, done
 
-      expect(completed).to.exist
-      expect(completed).to.have.length 4
-      expect(Number completed[1].value).to.equal 2
-      expect(failed).to.exist
-      expect(failed).to.have.length 4
-      expect(Number failed[3].value).to.equal 4
+      expect(history).to.exist
+      expect(history).to.have.length 8
+      expect(Number history[1].value).to.equal 2
+      expect(Number history[7].value).to.equal 4
       done()
 
   describe "##total", ->
@@ -246,11 +244,10 @@ describe "ElBorrachoStatsController", ->
 
     it "should fetch history for a specified queue", (done) ->
       await
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.queueHistory req, _res, done
 
-      expect(completed).to.exist
-      expect(failed).to.exist
+      expect(history).to.exist
       done()
 
     it "should fetch history for a specified queue and start date", (done) ->
@@ -266,11 +263,12 @@ describe "ElBorrachoStatsController", ->
 
       await
         _req = param: {queue: queuename}, query: start_date: datestr
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.queueHistory _req, _res, done
 
-      expect(completed).to.exist
-      expect(Number completed[0].value).to.equal 1
+      failed = (stat for stat in history when stat.type is "failed")
+      expect(history).to.exist
+      expect(Number history[0].value).to.equal 1
       expect(failed).to.exist
       expect(Number failed[0].value).to.equal 2
       done()
@@ -295,12 +293,13 @@ describe "ElBorrachoStatsController", ->
 
       await
         _req = param: {queue: queuename}, query: start_date: start, days_previous: days
-        _res = json: defer {completed, failed}
+        _res = json: defer history
         instance.queueHistory _req, _res, done
 
-      expect(completed).to.exist
-      expect(completed).to.have.length 4
-      expect(Number completed[1].value).to.equal 2
+      failed = (stat for stat in history when stat.type is "failed")
+      expect(history).to.exist
+      expect(history).to.have.length 8
+      expect(Number history[1].value).to.equal 2
       expect(failed).to.exist
       expect(failed).to.have.length 4
       expect(Number failed[3].value).to.equal 4

@@ -355,9 +355,9 @@ describe "ElBorrachoStats", ->
         expectedFailed    = instance.failed = 3
         await instance.update ideally defer()
 
-        await instance.fetchHistory null, null, ideally defer {completed, failed}
-        completedToday = do -> return stat for stat in completed when stat.date is today
-        failedToday = do -> return stat for stat in failed when stat.date is today
+        await instance.fetchHistory null, null, ideally defer history
+        completedToday = do -> return stat for stat in history when stat.date is today and stat.type is "completed"
+        failedToday = do -> return stat for stat in history when stat.date is today and stat.type is "failed"
         expect(Number completedToday.value).to.equal expectedCompleted
         expect(Number failedToday.value).to.equal expectedFailed
         done()
