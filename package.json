@@ -10,6 +10,7 @@
     "test": "npm run test:modules && npm run test:coverage",
     "test:modules": "mocha --recursive --compilers coffee:iced-coffee-script/register --require iced-coffee-coverage/register-istanbul test/",
     "test:coverage": "istanbul report",
+    "watch": "iced --watch --bare --map --runtime node -o ./lib -c src/",
     "build": "iced --bare --map --runtime node -o ./lib -c src/"
   },
   "repository": {
