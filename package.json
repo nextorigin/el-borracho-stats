@@ -39,6 +39,7 @@
   "devDependencies": {
     "bull": "^1.0.0",
     "chai": "^3.5.0",
+    "coveralls": "^2.11.12",
     "iced-coffee-coverage": "^1.0.2",
     "iced-coffee-script": "^108.0.11",
     "istanbul": "^0.4.4",
