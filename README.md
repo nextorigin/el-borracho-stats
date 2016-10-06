@@ -8,7 +8,22 @@
 
 REST and SSE API and worker producing daily and all-time totals for Bull queues
 
+Designed for use with [el-borracho][el-borracho] and [el-borracho-graph][el-borracho-graph]
+
 [![NPM][npm-stats]][npm]
+
+## Installation
+```sh
+npm install --save el-borracho-stats
+```
+
+## License
+
+MIT
+
+
+  [el-borracho]: https://github.com/nextorigin/el-borracho
+  [el-borracho-graph]: https://github.com/nextorigin/el-borracho-graph
 
   [ci-master]: https://img.shields.io/travis/nextorigin/el-borracho-stats/master.svg?style=flat-square
   [travis-ci]: https://travis-ci.org/nextorigin/el-borracho-stats
