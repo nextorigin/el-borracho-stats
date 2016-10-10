@@ -54,7 +54,7 @@
     "coveralls": "^2.11.14",
     "errify": "^1.0.0",
     "iced-runtime": "^1.0.3",
-    "mocha": "^3.1.0",
+    "mocha": "^3.1.1",
     "sinon": "^1.17.6",
     "sseries-of-tubes": "^2.0.0"
   }
