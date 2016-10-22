@@ -39,23 +39,20 @@
   "devDependencies": {
     "bull": "^1.0.0",
     "chai": "^3.5.0",
-    "coveralls": "^2.11.12",
+    "coveralls": "^2.11.14",
     "iced-coffee-coverage": "^1.0.3",
     "iced-coffee-script": "^108.0.11",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2",
+    "mocha": "^3.1.2",
     "redis": "^2.6.2",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.6"
   },
   "peerDependencies": {
     "express": "^4.14.0"
   },
   "dependencies": {
-    "coveralls": "^2.11.14",
     "errify": "^1.0.0",
     "iced-runtime": "^1.0.3",
-    "mocha": "^3.1.2",
-    "sinon": "^1.17.6",
     "sseries-of-tubes": "^2.0.0"
   }
 }
