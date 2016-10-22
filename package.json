@@ -1,6 +1,6 @@
 {
   "name": "el-borracho-stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "REST and SSE API and worker producing daily and all-time totals for Bull queues",
   "main": "lib/el-borracho-stats.js",
   "directories": {
