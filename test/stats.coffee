@@ -1,6 +1,6 @@
 ElBorrachoStats = require "../src/models/stats"
 
-redis      = require "redis"
+redis      = require "ioredis"
 errify     = require "errify"
 mocha      = require "mocha"
 {expect}   = require "chai"
@@ -109,9 +109,11 @@ describe "ElBorrachoStats", ->
 
     beforeEach (done) ->
       instance.lock done
+      return
 
     afterEach (done) ->
       instance.unlock done
+      return
 
     describe "##lock", ->
       it "should set the lock in redis", (done) ->
@@ -194,17 +196,18 @@ describe "ElBorrachoStats", ->
         multi = client.multi()
         multi.del key for key in statKeys
         multi.exec done
+        return
 
       it "should throw an error if lock update failed", (done) ->
         handler = dontCatch()
-        _EXPIRE = client.EXPIRE
-        client.EXPIRE = (_, __, callback) -> callback new Error "fake"
+        _expire = client.expire
+        client.expire = (_, __, callback) -> callback new Error "fake"
 
         expectation = (err) ->
           expect(err).to.be.an.instanceof Error
           expect(err.toString()).to.match /fake/
 
-          client.EXPIRE = _EXPIRE
+          client.expire = _expire
 
           handler.restore()
           done()
@@ -320,6 +323,7 @@ describe "ElBorrachoStats", ->
       multi = client.multi()
       multi.del key for key in statKeys
       multi.exec done
+      return
 
     describe "##fetch", ->
       it "should callback with totals for queue", (done) ->

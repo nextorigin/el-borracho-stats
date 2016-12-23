@@ -1,7 +1,7 @@
 ElBorrachoStats           = require "../src/models/stats"
 ElBorrachoStatsWorker     = require "../src/controllers/worker"
 
-redis      = require "redis"
+redis      = require "ioredis"
 Bull       = require "bull"
 errify     = require "errify"
 mocha      = require "mocha"

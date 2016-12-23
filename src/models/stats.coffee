@@ -33,7 +33,7 @@ class ElBorrachoStats
     callback()
 
   updateLock: (callback) =>
-    @redis.EXPIRE @statistician, @expire, callback
+    @redis.expire @statistician, @expire, callback
 
   unlock: (callback = ->) =>
     await @redis.del @statistician, defer err

@@ -1,7 +1,7 @@
 ElBorrachoStats           = require "../src/models/stats"
 ElBorrachoStatsController = require "../src/el-borracho-stats"
 
-redis      = require "redis"
+redis      = require "ioredis"
 errify     = require "errify"
 mocha      = require "mocha"
 {expect}   = require "chai"
@@ -62,6 +62,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.set key, i * 2 for key, i in statKeys
       multi.exec done
+      return
 
     afterEach (done) ->
       ideally = errify done
@@ -74,6 +75,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.del key for key in cleanup
       multi.exec done
+      return
 
     it "should callback with error if fetch fails", (done) ->
       instance.store.redis.mget = (_, callback) -> callback new Error "fake"
@@ -164,6 +166,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.set key, i * 2 for key, i in statKeys
       multi.exec done
+      return
 
     afterEach (done) ->
       ideally = errify done
@@ -176,6 +179,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.del key for key in cleanup
       multi.exec done
+      return
 
     it "should callback with error if fetch fails", (done) ->
       instance.store.redis.get = (_, callback) -> callback new Error "fake"
@@ -221,6 +225,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.set key, i * 2 for key, i in statKeys
       multi.exec done
+      return
 
     afterEach (done) ->
       ideally = errify done
@@ -233,6 +238,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.del key for key in cleanup
       multi.exec done
+      return
 
     it "should callback with error if fetch fails", (done) ->
       instance.store.redis.mget = (_, callback) -> callback new Error "fake"
@@ -328,6 +334,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.set key, i + 2 for key, i in statKeys
       multi.exec done
+      return
 
     afterEach (done) ->
       ideally = errify done
@@ -340,6 +347,7 @@ describe "ElBorrachoStatsController", ->
       multi = client.multi()
       multi.del key for key in cleanup
       multi.exec done
+      return
 
     it "should callback with error if fetch fails", (done) ->
       instance.store.redis.get = (_, callback) -> callback new Error "fake"
