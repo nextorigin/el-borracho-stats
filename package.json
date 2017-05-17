@@ -48,7 +48,7 @@
     "sinon": "^1.17.6"
   },
   "peerDependencies": {
-    "express": "^4.14.0"
+    "express": "^4.15.3"
   },
   "dependencies": {
     "errify": "^1.0.0",
