@@ -38,7 +38,7 @@
   "homepage": "https://github.com/nextorigin/el-borracho-stats#readme",
   "devDependencies": {
     "bull": "^2.0.0",
-    "chai": "^3.5.0",
+    "chai": "^4.0.1",
     "coveralls": "^2.11.15",
     "iced-coffee-coverage": "^1.0.21",
     "iced-coffee-script": "^108.0.11",
